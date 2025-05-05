@@ -227,7 +227,7 @@ def gerar_relatorio_dialog(parent):
     listbox.insert(END, f"{'ID':<5}{'Nome':<30}{'Cargo':<20}{'Salário Base':<15}{'Líquido':<15}")
     listbox.insert(END, "-" * 65)
     
-    # Preencher a listbox com os funcionários
+
     funcionarios = banco.listar_funcionarios()
     total_folha = 0
     
