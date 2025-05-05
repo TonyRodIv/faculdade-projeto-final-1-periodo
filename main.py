@@ -22,7 +22,7 @@ class Aplicativo:
         titulo.pack(pady=10)
         
         # Cores para os botões
-        cores = ["#3498db", "#2ecc71", "#e74c3c", "#f39c12", "#9b59b6"]
+        cores = ["#0b7f93", "#126678", "#226358", "#1f5047", "#0c2723"]
         
         # Botões do sistema
         botoes = [
