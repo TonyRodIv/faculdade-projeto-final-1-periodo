@@ -1,54 +1,14 @@
-import tkinter as tk
-import folhaPagamentos as fpg
+import customtkinter as ctk
 
-class Aplicativo:
-    def __init__(self):
-        self.root = tk.Tk()
-        self.root.title("App Principal")
-        self.root.geometry("400x350")
-        self._configurar_interface()
-        
-    def _configurar_interface(self):
-        """Cria os componentes da interface"""
-        # Frame principal
-        frame_principal = tk.Frame(self.root, padx=20, pady=10, bg="#f0f0f0")
-        frame_principal.pack(fill="both", expand=True)
-        
-        # Título
-        titulo = tk.Label(frame_principal, 
-                         text="Sistema de Folha de Pagamentos", 
-                         font=("Arial", 14, "bold"),
-                         bg="#f0f0f0")
-        titulo.pack(pady=10)
-        
-        # Cores para os botões
-        cores = ["#0b7f93", "#126678", "#226358", "#1f5047", "#0c2723"]
-        
-        # Botões do sistema
-        botoes = [
-            ("Adicionar Funcionário", lambda: fpg.adicionar_funcionario_dialog(self.root)),
-            ("Listar Funcionários", lambda: fpg.listar_funcionarios_dialog(self.root)),
-            ("Calcular Salário", lambda: fpg.calcular_salario_dialog(self.root)),
-            ("Gerar Relatório", lambda: fpg.gerar_relatorio_dialog(self.root)),
-            ("Sobre", lambda: fpg.mostrar_mensagem("Sobre", "Sistema de Folha de Pagamentos\nVersão 1.0"))
-        ]
-        
-        for i, (texto, comando) in enumerate(botoes):
-            tk.Button(
-                frame_principal,
-                text=texto,
-                command=comando,
-                width=20,
-                bg=cores[i],
-                fg="white",
-                font=("Arial", 10),
-                relief=tk.RAISED,
-                bd=2
-            ).pack(pady=8)
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
 
-    def executar(self):
-        self.root.mainloop()
+app = ctk.CTk()
+app.geometry("400x250")
 
-if __name__ == "__main__":
-    app = Aplicativo()
-    app.executar()
+btn = ctk.CTkButton(app, text="Botão 1", command=lambda: print("Você clicou no botão 1!"))
+btn.pack(padx=20, pady=20)
+btn = ctk.CTkButton(app, text="Botão 2", command=lambda: print("Você clicou no botão 2!"))
+btn.pack(padx=20, pady=20)
+
+app.mainloop()
