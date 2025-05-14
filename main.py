@@ -1,4 +1,5 @@
 import login
+import os
 print("Tela de seleção de usuário")
 print("1. Administrador")
 print("2. Vendedor")
@@ -17,3 +18,7 @@ while True:
     else:
         print("Opção inválida. Tente novamente.")
         opcao = input("Escolha uma opção (1, 2 ou 3): ")
+        
+# def clear_screen():
+#     comando = 'cls' if os.name == 'nt' else 'clear'
+#     os.system(comando)

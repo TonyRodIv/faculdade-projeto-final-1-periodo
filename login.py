@@ -13,7 +13,7 @@ def login(tipoUsuario):
     users = load_users()
     if not users:
         return
-
+    
     while True:
         print("=== Sistema de Login ===")
         username = input("Usuário: ")
@@ -27,13 +27,18 @@ def login(tipoUsuario):
             print("Login bem-sucedido!")
             if tipoUsuario == "adm":
                 import adm
+                limpar()
                 adm.admInit()
             elif tipoUsuario == "vend":
                 import vend
+                limpar()
                 vend.vendInit()
             break
         else:
             print("Usuário ou senha incorretos. Tente novamente.")
+
+def limpar():
+    os.system('cls')
 
 if __name__ == "__main__":
     login()
