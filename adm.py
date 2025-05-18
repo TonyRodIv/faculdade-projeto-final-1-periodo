@@ -18,7 +18,7 @@ def admMenu():
             break
         elif opcao == "2":
             print("Gerenciando Filmes...")
-            # Aqui você pode adicionar a lógica para gerenciar vendas
+            # add codigo
             break
         elif opcao == "3":
             print("Você escolheu Sair.")
