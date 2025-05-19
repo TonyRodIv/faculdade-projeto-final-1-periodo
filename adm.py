@@ -30,4 +30,4 @@ def admMenu():
             print("Opção inválida. Tente novamente.")
             opcao = input("Escolha uma opção (1, 2 ou 3): ")
             
-admInit()
+# admInit()

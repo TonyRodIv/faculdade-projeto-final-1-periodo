@@ -5,5 +5,12 @@
         "classificacao": "10",
         "genero": "Ficção Científica",
         "sala": "1"
+    },
+    {
+        "titulo": "Barbiee",
+        "duracao": 150,
+        "classificacao": "Livre",
+        "genero": "Mulher",
+        "sala": "2"
     }
 ]

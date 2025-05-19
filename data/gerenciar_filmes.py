@@ -20,7 +20,6 @@ def salvar_json(objetos, arquivo):
     with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(objetos, f, ensure_ascii=False, indent=4)
 
-# carrega listas
 salas  = carregar_json(ARQUIVO_SALAS)
 filmes = carregar_json(ARQUIVO_FILMES)
 
@@ -118,11 +117,11 @@ def editar_filme():
                 print(f"❌ Sala {nsal} já ocupa outro filme.")
                 return
 
-            f['titulo']        = novo_titulo
-            if ndur: f['duracao']       = int(ndur)
-            if ncla: f['classificacao'] = ncla
-            if ngen: f['genero']        = ngen
-            f['sala']          = nsal
+            f['titulo']= novo_titulo
+            if ndur: f['duracao']= int(ndur)
+            if ncla: f['classificacao']= ncla
+            if ngen: f['genero']= ngen
+            f['sala']= nsal
 
             salvar_json(filmes, ARQUIVO_FILMES)
             print(f"✅ Filme '{novo_titulo}' atualizado.")

@@ -10,5 +10,9 @@
     {
         "numero": "3",
         "cadeiras": 40
+    },
+    {
+        "numero": "4",
+        "cadeiras": 80
     }
 ]
