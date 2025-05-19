@@ -70,8 +70,4 @@ def vendInit():
             print('Vendas Fechadas.')
             break
 
-<<<<<<< HEAD
 vendInit()
-=======
-vendInit()
->>>>>>> 6c1a076e61b2ee23a0459492474ac5af8d590573
