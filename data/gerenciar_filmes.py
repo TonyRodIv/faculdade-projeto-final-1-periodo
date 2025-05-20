@@ -56,23 +56,30 @@ def adicionar_filme():
     genero        = input("Gênero: ").strip()
 
     listar_salas()
-    sala = input("Número da sala: ").strip()
-    if not any(s['numero'] == sala for s in salas):
-        print(f"❌ Sala {sala} não cadastrada.")
-        return
-    if any(f['sala'] == sala for f in filmes):
-        print(f"❌ Sala {sala} já está ocupada por outro filme.")
-        return
+    salas_input = input(
+        "Número(s) da(s) sala(s) (separe por vírgula): "
+    ).strip()
+    salas_escolhidas = [
+        s.strip() for s in salas_input.split(',') if s.strip()
+    ]
+
+    for s_id in salas_escolhidas:
+        if not any(s['numero'] == s_id for s in salas):
+            print(f"❌ Sala {s_id} não cadastrada.")
+            return
+        if any(s_id in f.get('salas', []) for f in filmes):
+            print(f"❌ Sala {s_id} já está ocupada por outro filme.")
+            return
 
     filmes.append({
         "titulo":        titulo,
         "duracao":       duracao,
         "classificacao": classificacao,
         "genero":        genero,
-        "sala":          sala
+        "salas":         salas_escolhidas
     })
     salvar_json(filmes, ARQUIVO_FILMES)
-    print(f"✅ Filme '{titulo}' adicionado na sala {sala}.")
+    print(f"✅ Filme '{titulo}' adicionado nas salas {', '.join(salas_escolhidas)}.")
 
 def remover_filme():
     print("=== Remover Filme ===")
@@ -151,6 +158,6 @@ def gerenciar_filmes():
 
         input("\nEnter para continuar...")
 
-# if __name__ == "__main__":
-#     gerenciar_filmes()
+if __name__ == "__main__":
+    gerenciar_filmes()
 

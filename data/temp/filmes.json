@@ -4,13 +4,26 @@
         "duracao": 169,
         "classificacao": "10",
         "genero": "Ficção Científica",
-        "sala": "1"
+        "salas": [
+            "1", "3"
+        ]
     },
     {
-        "titulo": "Barbiee",
+        "titulo": "Barbie",
         "duracao": 150,
         "classificacao": "Livre",
         "genero": "Mulher",
-        "sala": "2"
+        "salas": [
+            "2"
+        ]
+    },
+    {
+        "titulo": "Invocação do Mal 4",
+        "duracao": 180,
+        "classificacao": "16",
+        "genero": "Terror",
+        "salas": [
+            "2"
+        ]
     }
 ]
