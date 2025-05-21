@@ -1,6 +1,12 @@
 import os
 from data.gerenciar_sala import carregar_salas
 from data.gerenciar_filmes import filmes as lista_filmes
+from data.gerenciar_assentos import (
+    carregar_assentos,
+    salvar_assentos,
+    init_sala,
+    gerar_mapa
+)
 
 def vendInit():
     print("Olá, bem-vindo ao sistema de gerenciamento de tickets.")
@@ -9,52 +15,57 @@ def vendInit():
     salas_list = carregar_salas()
     salas = {s['numero']: s for s in salas_list}
 
+    salas_list = carregar_salas()
+    salas = {s['numero']: s for s in salas_list}
+    assentos = carregar_assentos()
+
     while True:
+        # 1) filmes
         print("\nFilmes disponíveis:")
-        for idx, f in enumerate(lista_filmes, start=1):
-            print(f"  {idx} - {f['titulo']}")
-
-        escolha = input("Escolha o número do filme: ").strip()
-        if not escolha.isdigit() or not (1 <= int(escolha) <= len(lista_filmes)):
-            print("Escolha inválida. Tente novamente.")
+        for i,f in enumerate(lista_filmes,1):
+            print(f"  {i} - {f['titulo']}")
+        esc = input("Escolha o número do filme: ").strip()
+        if not esc.isdigit(): continue
+        filme = lista_filmes[int(esc)-1]
+        titulo = filme['titulo']
+        # 2) salas do filme
+        salas_filme = filme.get('salas', [])
+        if not salas_filme:
+            print(f"❌ '{titulo}' não está em nenhuma sala.")
             continue
-
-        filme_obj = lista_filmes[int(escolha) - 1]
-        titulo    = filme_obj['titulo']
-        salas_film= filme_obj.get('salas', [])
-
-        if not salas_film:
-            print(f"❌ O filme '{titulo}' não está atribuído a nenhuma sala.")
-            continue
-
         print(f"\nSalas com '{titulo}':")
-        for i, sn in enumerate(salas_film, start=1):
-            sala_obj = salas.get(sn)
-            cadeiras = sala_obj['cadeiras'] if sala_obj else "??"
-            print(f"  {i} - Sala {sn} ({cadeiras} cadeiras)")
-
-        escolha_sala = input("Escolha o número da sala: ").strip()
-        if not escolha_sala.isdigit() or not (1 <= int(escolha_sala) <= len(salas_film)):
-            print("Opção de sala inválida.")
+        for i, sn in enumerate(salas_filme,1):
+            s = salas[sn]
+            print(f"  {i} - Sala {sn} ({s['linhas']}×{s['colunas']})")
+        esc_s = input("Escolha a sala: ").strip()
+        if not esc_s.isdigit(): continue
+        sala_num = salas_filme[int(esc_s)-1]
+        # inicializa assentos se necessário
+        sala_info = salas[sala_num]
+        init_sala(assentos, sala_num,
+                  sala_info['linhas'],
+                  sala_info['colunas'])
+        # 3) exibe mapa
+        print("\nMapa de assentos (XX = ocupado):")
+        mapa = gerar_mapa(assentos[sala_num])
+        for row in mapa:
+            print("  " + " ".join(row))
+        # 4) escolhe código
+        escolha = input("Digite o código do assento: ").strip().upper()
+        estado = assentos[sala_num].get(escolha)
+        if estado is None:
+            print("Código inválido.")
             continue
-
-        sala_num = salas_film[int(escolha_sala) - 1]
-        sala_obj = salas.get(sala_num)
-        if not sala_obj:
-            print(f"❌ Sala {sala_num} não encontrada.")
+        if estado:
+            print("Assento ocupado.")
             continue
+        # 5) marca e salva
+        assentos[sala_num][escolha] = True
+        salvar_assentos(assentos)
+        print(f"\n✅ Venda confirmada: '{titulo}', Sala {sala_num}, Assento {escolha}")
 
-        print(f"\nFilme selecionado: {titulo}")
-        print(f"Sala escolhida: {sala_num} ({sala_obj['cadeiras']} cadeiras)")
-        confirmar = input("Digite '1' para confirmar a venda ou qualquer outra tecla para cancelar: ").strip()
-        if confirmar != "1":
-            print("Operação cancelada.")
-            continue
-
-        print(f"\n✅ Ingresso vendido para '{titulo}' na sala {sala_num}.")
-
-        if input("\nDeseja vender outro ingresso? (s/n): ").strip().lower() != "s":
-            print("\nVendas Fechadas.")
+        if input("\nDeseja vender outro Ingresso? (s/n): ").lower() != "s":
+            print("Encerrando vendas.")
             break
 
 if __name__ == "__main__":

@@ -1,18 +1,27 @@
 [
     {
         "numero": "1",
-        "cadeiras": 60
+        "linhas": 10,
+        "colunas": 6
     },
     {
         "numero": "2",
-        "cadeiras": 60
+        "linhas": 10,
+        "colunas": 10
     },
     {
         "numero": "3",
-        "cadeiras": 40
+        "linhas": 14,
+        "colunas": 10
     },
     {
         "numero": "4",
-        "cadeiras": 80
+        "linhas": 4,
+        "colunas": 10
+    },
+    {
+        "numero": "5",
+        "linhas": 7,
+        "colunas": 10
     }
 ]

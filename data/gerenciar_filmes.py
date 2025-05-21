@@ -34,19 +34,24 @@ def listar_salas():
     for s in salas:
         print(f" • Sala {s['numero']} - {s['cadeiras']} cadeiras")
 
+
 def listar_filmes():
     if not filmes:
         print("⚠️  Sem filmes cadastrados.")
         return
     print("Filmes:")
     for f in filmes:
-        print(f" • {f['titulo']} | {f['duracao']}min | {f['genero']} | Classif.: {f['classificacao']} | Sala: {f['sala']}")
+        salas_str = ', '.join(f.get('salas', []))
+        print(
+            f" • {f['titulo']} | {f['duracao']}min | {f['genero']} | "
+            f"Classif.: {f['classificacao']} | Salas: {salas_str}"
+        )
+
 
 def adicionar_filme():
     print("=== Adicionar Filme ===")
     titulo = input("Título: ").strip()
-    chave = titulo.lower()
-
+    chave  = titulo.lower()
     if any(f['titulo'].lower() == chave for f in filmes):
         print(f"❌ Filme '{titulo}' já existe.")
         return
@@ -56,30 +61,28 @@ def adicionar_filme():
     genero        = input("Gênero: ").strip()
 
     listar_salas()
-    salas_input = input(
-        "Número(s) da(s) sala(s) (separe por vírgula): "
-    ).strip()
-    salas_escolhidas = [
-        s.strip() for s in salas_input.split(',') if s.strip()
-    ]
+    salas_input = input("Número(s) da(s) sala(s) (separe por vírgula): ").strip()
+    salas_escolhidas = [s.strip() for s in salas_input.split(',') if s.strip()]
 
     for s_id in salas_escolhidas:
         if not any(s['numero'] == s_id for s in salas):
             print(f"❌ Sala {s_id} não cadastrada.")
             return
+
         if any(s_id in f.get('salas', []) for f in filmes):
             print(f"❌ Sala {s_id} já está ocupada por outro filme.")
             return
 
     filmes.append({
-        "titulo":        titulo,
-        "duracao":       duracao,
-        "classificacao": classificacao,
-        "genero":        genero,
-        "salas":         salas_escolhidas
+        "titulo":titulo,
+        "duracao":duracao,
+        "classificacao":classificacao,
+        "genero":genero,
+        "salas":salas_escolhidas
     })
     salvar_json(filmes, ARQUIVO_FILMES)
     print(f"✅ Filme '{titulo}' adicionado nas salas {', '.join(salas_escolhidas)}.")
+
 
 def remover_filme():
     print("=== Remover Filme ===")
@@ -88,13 +91,15 @@ def remover_filme():
         return
 
     titulo = input("Título do filme a remover: ").strip()
-    antes = len(filmes)
+    antes  = len(filmes)
     filmes[:] = [f for f in filmes if f['titulo'].lower() != titulo.lower()]
+
     if len(filmes) < antes:
         salvar_json(filmes, ARQUIVO_FILMES)
         print(f"✅ Filme '{titulo}' removido.")
     else:
         print(f"❌ Filme '{titulo}' não encontrado.")
+
 
 def editar_filme():
     print("=== Editar Filme ===")
@@ -105,6 +110,7 @@ def editar_filme():
     titulo = input("Título do filme a editar: ").strip()
     for f in filmes:
         if f['titulo'].lower() == titulo.lower():
+  
             novo_titulo = input(f"Título (atual: {f['titulo']}): ").strip() or f['titulo']
             if novo_titulo.lower() != f['titulo'].lower() and \
                any(x['titulo'].lower() == novo_titulo.lower() for x in filmes):
@@ -115,26 +121,37 @@ def editar_filme():
             ncla = input(f"Classif. (atual: {f['classificacao']}): ").strip()
             ngen = input(f"Gênero (atual: {f['genero']}): ").strip()
 
+            salas_atual = f.get('salas', [])
+            atual_str   = ', '.join(salas_atual)
             listar_salas()
-            nsal = input(f"Sala (atual: {f['sala']}): ").strip() or f['sala']
-            if not any(s['numero'] == nsal for s in salas):
-                print(f"❌ Sala {nsal} não existe.")
-                return
-            if nsal != f['sala'] and any(x['sala'] == nsal for x in filmes):
-                print(f"❌ Sala {nsal} já ocupa outro filme.")
-                return
+            inp = input(f"Salas (atual: {atual_str}) [separe por vírgula]: ").strip()
+            if inp:
+                novas_salas = [s.strip() for s in inp.split(',') if s.strip()]
+            else:
+                novas_salas = salas_atual
 
-            f['titulo']= novo_titulo
+            for s_id in novas_salas:
+                if not any(s['numero'] == s_id for s in salas):
+                    print(f"❌ Sala {s_id} não existe.")
+                    return
+                
+                if s_id not in salas_atual and \
+                   any(s_id in x.get('salas', []) for x in filmes):
+                    print(f"❌ Sala {s_id} já está ocupada por outro filme.")
+                    return
+
+            f['titulo']  = novo_titulo
             if ndur: f['duracao']= int(ndur)
             if ncla: f['classificacao']= ncla
             if ngen: f['genero']= ngen
-            f['sala']= nsal
+            f['salas']= novas_salas
 
             salvar_json(filmes, ARQUIVO_FILMES)
             print(f"✅ Filme '{novo_titulo}' atualizado.")
             return
 
     print(f"❌ Filme '{titulo}' não encontrado.")
+
 
 def gerenciar_filmes():
     while True:
@@ -147,17 +164,20 @@ def gerenciar_filmes():
         print("5. Voltar")
         opt = input("Opção (1–5): ").strip()
 
-        if   opt == "1": adicionar_filme()
-        elif opt == "2": remover_filme()
-        elif opt == "3": listar_filmes()
-        elif opt == "4": editar_filme()
+        if   opt == "1":
+            adicionar_filme()
+        elif opt == "2":
+            remover_filme()
+        elif opt == "3":
+            listar_filmes()
+        elif opt == "4":
+            editar_filme()
         elif opt == "5":
-            import adm
-            adm.admInit()
-        else: print("❌ Opção inválida.")
+            break
+        else:
+            print("❌ Opção inválida.")
 
-        input("\nEnter para continuar...")
+        input("\nPressione Enter para continuar...")
 
 if __name__ == "__main__":
     gerenciar_filmes()
-

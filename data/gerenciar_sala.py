@@ -23,23 +23,20 @@ def salvar_salas(salas):
 salas = carregar_salas()
 
 def adicionar_sala():
-    numeros_existentes = []
-    for s in salas:
-        try:
-            numeros_existentes.append(int(s['numero']))
-        except (KeyError, ValueError):
-            pass
-    if numeros_existentes:
-        proximo_numero = max(numeros_existentes) + 1
-    else:
-        proximo_numero = 1
+    print("=== Adicionar Sala ===")
+    numeros = [int(s['numero']) for s in salas if s.get('numero').isdigit()]
+    numero = str(max(numeros)+1) if numeros else "1"
 
-    numero_str = str(proximo_numero)
-    print(f"> Número da sala atribuído automaticamente: {numero_str}")
-    cadeiras = int(input("Número de cadeiras: ").strip())
-    salas.append({"numero": numero_str, "cadeiras": cadeiras})
+    linhas = int(input("Quantidade de fileiras (linhas): ").strip())
+    colunas = int(input("Poltronas por fileira (colunas): ").strip())
+
+    salas.append({
+        "numero": numero,
+        "linhas": linhas,
+        "colunas": colunas
+    })
     salvar_salas(salas)
-    print(f"> Sala {numero_str} com {cadeiras} cadeiras adicionada.")
+    print(f"> Sala {numero}: {linhas}×{colunas} adicionada.")
 
 
 
@@ -56,9 +53,8 @@ def remover_sala():
 def listar_salas():
     if not salas:
         print("> Nenhuma sala cadastrada.")
-    else:
-        for s in salas:
-            print(f"• Sala {s['numero']} – {s['cadeiras']} cadeiras")
+    for s in salas:
+        print(f"• Sala {s['numero']} – {s['linhas']}×{s['colunas']} (linhas×colunas)")
 
 def editar_sala():
     numero = input("Sala a editar: ").strip()
@@ -101,5 +97,5 @@ def gerenciar_salas():
             print("> Opção inválida.")
         input("\nEnter para continuar...")
 
-# if __name__ == "__main__":
-#     gerenciar_salas()
+if __name__ == "__main__":
+    gerenciar_salas()
