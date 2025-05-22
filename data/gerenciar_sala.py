@@ -28,8 +28,19 @@ def adicionar_sala():
     numero = str(max(numeros)+1) if numeros else "1"
 
     linhas = int(input("Quantidade de fileiras (linhas): ").strip())
+    if any(l < 1 for l in [linhas]):
+        print("❌ Quantidade de fileiras inválida.")
+        return
+    elif linhas > 10:
+        print("⚠️  Atenção: fileiras acima de 10 podem não ser exibidas corretamente, digite um número menor.")
+        return
     colunas = int(input("Poltronas por fileira (colunas): ").strip())
-
+    if any(c < 1 for c in [colunas]):
+        print("❌ Quantidade de poltronas inválida.")
+        return
+    elif colunas > 15:
+        print("⚠️  Atenção: poltronas acima de 15 podem não ser exibidas corretamente, digite um número menor.")
+        return
     salas.append({
         "numero": numero,
         "linhas": linhas,
@@ -54,13 +65,15 @@ def listar_salas():
     if not salas:
         print("> Nenhuma sala cadastrada.")
     for s in salas:
-        print(f"• Sala {s['numero']} – {s['linhas']}×{s['colunas']} (linhas×colunas)")
+        total_cadeiras = s['linhas'] * s['colunas']
+        print(f"• Sala {s['numero']} – {total_cadeiras} cadeiras")
 
 def editar_sala():
+    listar_salas()
     numero = input("Sala a editar: ").strip()
     for s in salas:
         if s["numero"] == numero:
-            novo_cad = input(f"Novo total de cadeiras (atual {s['cadeiras']}): ").strip()
+            novo_cad = input(f"Novo total de linhas (atual {s['cadeiras']}): ").strip()
             if novo_cad:
                 s["cadeiras"] = int(novo_cad)
             salvar_salas(salas)

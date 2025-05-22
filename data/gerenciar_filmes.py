@@ -56,9 +56,9 @@ def adicionar_filme():
         print(f"❌ Filme '{titulo}' já existe.")
         return
 
-    duracao       = int(input("Duração (min): ").strip())
+    duracao= int(input("Duração (min): ").strip())
     classificacao = input("Classificação etária: ").strip()
-    genero        = input("Gênero: ").strip()
+    genero= input("Gênero: ").strip()
 
     listar_salas()
     salas_input = input("Número(s) da(s) sala(s) (separe por vírgula): ").strip()
