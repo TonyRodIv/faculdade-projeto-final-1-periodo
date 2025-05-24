@@ -69,6 +69,7 @@ def listar_salas():
         print(f"• Sala {s['numero']} – {total_cadeiras} cadeiras")
 
 def editar_sala():
+    # resolver bugs...
     listar_salas()
     numero = input("Sala a editar: ").strip()
     for s in salas:

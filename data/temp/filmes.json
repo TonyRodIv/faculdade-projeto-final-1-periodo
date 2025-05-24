@@ -12,7 +12,7 @@
         "titulo": "Barbie",
         "duracao": 150,
         "classificacao": "Livre",
-        "genero": "Mulher",
+        "genero": "Comédia",
         "salas": [
             "2"
         ]
@@ -23,7 +23,7 @@
         "classificacao": "16",
         "genero": "Terror",
         "salas": [
-            "2"
+            "5"
         ]
     }
 ]
